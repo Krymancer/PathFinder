@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>PathFinder</title>
+    <style>
+        body {
+            margin: 0;
+            background: #181717;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            width: 150px;
+        }
+
+        .controls>button {
+            border: none;
+            font-family: Helvetica, sans-serif;
+            font-size: 20px;
+            margin: 10px 0 0 10px;
+        }
+
+        .node {
+            color: white;
+            padding: 10px;
+            font-family: Helvetica, sans-serif;
+        }
+
+        .node>input {
+            width: 30px;
+            height: 20px;
+            text-align: center;
+            border: 0;
+        }
+    </style>
+
+</head>
+
+<body oncontextmenu="return false;">
+    <div class="controls">
+        <button onclick="startSearch()">Start</button>
+        <button onclick="clearBorad()">Clear Board</button>
+        <div class="node">
+            <p> Start Node</p>
+            <input id="startX" type="text" value="0">
+            <input id="startY" type="text" value="0">
+        </div>
+        <div class="node">
+            <p> Target Node</p>
+            <input id="targetX" type="text" value="19">
+            <input id="targetY" type="text" value="19">
+        </div>
+    </div>
+    <canvas id="canvas" width="600" height="600"></canvas>
+</body>
+<script src='js/main.js'></script>
+
+</html>
