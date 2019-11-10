@@ -102,12 +102,23 @@ function heuristic(fristNode, secondNode) {
     return Math.abs(secondNode.x - fristNode.x) + Math.abs(secondNode.y - fristNode.y);
 }
 
-//Init the maze
+// Init the maze
 function initMaze() {
     for (let i = 0; i < mazeSize; i++) {
         maze[i] = new Array(mazeSize);
         for (let j = 0; j < mazeSize; j++) {
             maze[i][j] = new Node(i, j);
+        }
+    }
+}
+
+// Clear paths in the maze 
+function cleanMaze() {
+    for (let i = 0; i < mazeSize; i++) {
+        for (let j = 0; j < mazeSize; j++) {
+            if (maze[i][j].state === 'OPEN' || maze[i][j].state === 'PATH') {
+                maze[i][j].state = 'FREE';
+            }
         }
     }
 }
@@ -138,13 +149,22 @@ function clearMaze() {
     setNeighbors();
 }
 
-function clearBorad() {
+function clearWalls() {
     done = false;
     clearMaze();
 }
 
+function clearBoard() {
+    done = false;
+    setNodesPositions();
+    cleanMaze();
+    setNeighbors();
+
+}
+
 function startSearch() {
     start = true;
+    closedSet = [];
     openSet = [startNode];
     path = [];
 }
@@ -239,12 +259,13 @@ function update() {
                     iterator = iterator.previous;
                 }
                 done = true;
+                start = false;
             }
 
 
             // Removing current of openSet
             for (let i = openSet.length - 1; i >= 0; i--) {
-                if (openSet[1] === current) {
+                if (openSet[i] === current) {
                     openSet.splice(i, 1);
                     closedSet.push(current);
                 }
@@ -254,7 +275,7 @@ function update() {
             for (let i = 0; i < neighbors.length; i++) {
                 neighbor = neighbors[i];
 
-                if(closedSet.includes(neighbor) || neighbor.wall){
+                if (closedSet.includes(neighbor) || neighbor.wall) {
                     continue;
                 }
 
@@ -265,7 +286,7 @@ function update() {
                     gScoreBest = true;
                     neighbor.h = heuristic(neighbor, targetNode);
                     openSet.push(neighbor);
-                } else if (gScore < neighbor.g) {
+                } else if (gScore <= neighbor.g) {
                     gScoreBest = true;
                 }
 
@@ -273,7 +294,6 @@ function update() {
                     neighbor.previous = current;
                     neighbor.g = gScore;
                     neighbor.f = neighbor.g + neighbor.h;
-                    console.log(neighbor);
                 }
 
             }
@@ -296,7 +316,7 @@ function update() {
 
     // Cleaning the canvas
     context.fillStyle = 'black';
-    context.fillRect(0, 0, 600, 600);
+    context.clearRect(0, 0, 600, 600);
 
     // Drawing cells
     for (let i = 0; i < mazeSize; i++) {
