@@ -116,7 +116,12 @@ function initMaze() {
 function cleanMaze() {
     for (let i = 0; i < mazeSize; i++) {
         for (let j = 0; j < mazeSize; j++) {
-            if (maze[i][j].state === 'OPEN' || maze[i][j].state === 'PATH') {
+            if (
+              maze[i][j].state === 'OPEN' ||
+              maze[i][j].state === 'PATH' ||
+              maze[i][j].state === 'START' ||
+              maze[i][j].state === 'TARGET'
+            ) {
                 maze[i][j].state = 'FREE';
             }
         }
